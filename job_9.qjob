@@ -1,7 +1,7 @@
 # 选择资源
 
 
-#PBS -N test_rt
+#PBS -N test_svm
 #PBS -l ngpus=1
 #PBS -l mem=46gb
 #PBS -l ncpus=8
@@ -10,12 +10,12 @@
 #PBS -m ae
 #PBS -j oe
 
-#PBS -o /srv/scratch/z5102138/test_ijcai_r_test/
+#PBS -o /srv/scratch/z5102138/test_dataset_svm_base/
 source ~/anaconda3/etc/profile.d/conda.sh
 conda activate py36
 
 
-cd /srv/scratch/z5102138/test_ijcai_r_test
+cd /srv/scratch/z5102138/test_dataset_svm_base
 which python
 
 
