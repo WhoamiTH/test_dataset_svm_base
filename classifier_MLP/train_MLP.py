@@ -283,7 +283,7 @@ def get_infor_data(infor_method, svm_model_name, train_data, train_label, positi
         # informative_minority_data = negative_data[border_majority_index]
         # border_majority_data = positive_data[informative_minority_index]
         svm_model = joblib.load(svm_model_name)
-        svm_sv_index = model.support_
+        svm_sv_index = svm_model.support_
         sv_data = train_data[svm_sv_index]
         sv_label = train_label[svm_sv_index].reshape(-1, 1)
         informative_minority_data, border_majority_data = divide_data(sv_data, sv_label)
