@@ -79,9 +79,11 @@ def get_batch_size(batch_size, infor_method, positive_length, border_majority_le
         return min(informative_minority_length, batch_size)
     
     if infor_method == 'bm':
+        batch_size = min(positive_data, batch_size)
         return min(border_majority_length, batch_size)
     
     if infor_method == 'both' or infor_method == 'both2' or infor_method == 'both3':
+        batch_size = min(border_majority_length, batch_size)
         return min(informative_minority_length, batch_size)
      
 
@@ -336,6 +338,7 @@ train_method = 'MLP_im_SVMRBF_20000'
 num_epochs = 5000
 batch_size = 100
 start_epochs = 0
+save_epoch = 2000
 # ----------------------------------set parameters---------------------------------------
 set_para()
 train_file_name = './test_{0}/standlization_data/{0}_std_train_{1}.csv'.format(dataset_name, dataset_index)
@@ -487,7 +490,20 @@ for epoch in range(start_epochs+1, num_epochs+1):
         # auc = skmet.roc_auc_score(y_true=input_valid_label, y_score=result)
         # print('epoch {:.0f}, loss {:.4f}, train acc {:.2f}%, f1 {:.4f}, precision {:.4f}, recall {:.4f}, auc {:.4f}'.format(epoch+1, train_loss, train_acc*100, f1, pre, rec, auc) )
         print('epoch {:.0f}, loss {:.4f}'.format(epoch+1, train_loss) )
-        
+    if epoch == save_epoch:
+        cur_train_method_list = [model_type, infor_method, svm_name, str(save_epoch)]
+        cur_train_method = '_'.join(cur_train_method_list)
+        cur_model_name = './test_{0}/model_{1}/record_{2}/{1}_{3}'.format(dataset_name, cur_train_method, record_index, dataset_index)
+        torch.save(net, cur_model_name)
+        save_epoch = dependency_dict[epoch]
+        print('save model {0}'.format(cur_model_name))
+
+            
+cur_train_method_list = [model_type, infor_method, svm_name, str(save_epoch)]
+cur_train_method = '_'.join(cur_train_method_list)
+cur_model_name = './test_{0}/model_{1}/record_{2}/{1}_{3}'.format(dataset_name, cur_train_method, record_index, dataset_index)
+torch.save(net, cur_model_name)
+print('save model {0}'.format(cur_model_name))   
 
 torch.save(net, model_name)
 
